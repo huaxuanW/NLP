@@ -30,7 +30,6 @@ from tqdm import tqdm
 !cp /content/drive/MyDrive/深度学习/NLP/transformers/model.py .
 !cp /content/drive/MyDrive/深度学习/NLP/transformers/multihead_attention.py .
 !cp /content/drive/MyDrive/深度学习/NLP/transformers/positinal_embedding.py .
-!cp /content/drive/MyDrive/深度学习/SpeechEnhancement/model_pipeline.py .
 !cp /content/drive/MyDrive/深度学习/NLP/transformers/token_embeddig.py .
 !cp /content/drive/MyDrive/深度学习/NLP/transformers/transfomer_embedding.py .
 
