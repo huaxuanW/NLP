@@ -54,7 +54,7 @@ class DecoderBlock(nn.Module):
         self.norm3 = LayerNorm(embedding_dim)
         self.dropout3 = nn.Dropout(dropout_rate)
 
-    def forward(self, trg, src, mask_src, mask_trg):
+    def forward(self, trg, src, mask_trg, mask_src):
         # 1. multi-head attention using only target sentence
         x_copy = trg
         x = self.att1(q=trg, k=trg, v=trg, mask=mask_trg)
@@ -131,5 +131,93 @@ class DecoderLayer(nn.Module):
         return self.output_layer(trg)
 
 class Transformers(nn.Module):
-    def __init__(self):
+    def __init__(self, pad_idx, src_vocab_size, trg_vocab_size, num_layers, 
+                 embedding_dim, max_len, hidden_dim, num_head, dropout_rate, device):
         super().__init__()
+    
+        self.encoder = EncoderLayer(num_layers=num_layers,
+                                    vocab_size=src_vocab_size,
+                                    embedding_dim=embedding_dim,
+                                    max_len=max_len,
+                                    hidden_dim=hidden_dim,
+                                    num_head=num_head,
+                                    dropout_rate=dropout_rate,
+                                    device=device)
+
+        self.decoder = DecoderLayer(num_layers=num_layers,
+                                    vocab_size=trg_vocab_size,
+                                    embedding_dim=embedding_dim,
+                                    max_len=max_len,
+                                    hidden_dim=hidden_dim,
+                                    num_head=num_head,
+                                    dropout_rate=dropout_rate,
+                                    device=device)
+        
+        self.pad_idx = pad_idx
+        self.device = device
+
+    def forward(self, src, trg):
+        src_mask = self.generate_mask(src, src)
+
+        src_trg_mask = self.generate_mask(trg, src)
+
+        trg_mask = self.generate_mask(trg, trg) * self.make_no_peak_mask(trg, trg)
+
+        enc_src = self.encoder(src, src_mask)
+        output = self.decoder(trg, enc_src, trg_mask, src_trg_mask)
+
+        return output
+    
+    def generate_mask(self, q, k):
+        len_q, len_k = q.size(1), k.size(1)
+        
+        # to shape(batch_size, 1, 1, len_k)
+        k = k.ne(self.pad_idx).reshape(-1, 1, 1, len_k)
+        # to shape(batch_size, 1, len_q, len_k)
+        k = k.repeat(1, 1, len_q, 1)
+
+        # to shape(batch_size, 1, len_q, 1)
+        q = q.ne(self.pad_idx).reshape(-1, 1, len_q, 1)
+        # to shape(batch_size, 1, len_q, len_k)
+        q = q.repeat(1, 1, 1, len_k)
+
+        mask = k & q
+        return mask
+
+    def make_no_peak_mask(self, q, k):
+        len_q, len_k = q.size(1), k.size(1)
+
+        # len_q x len_k
+        mask = torch.tril(torch.ones(len_q, len_k)).type(torch.BoolTensor).to(self.device)
+
+        return mask
+
+
+if __name__== "__main__":
+    pad_idx=0
+    src_vocab_size=20
+    trg_vocab_size=20
+    num_layers=1
+    embedding_dim=512
+    max_len=60
+    hidden_dim=2048
+    num_head=8
+    dropout_rate=0.1
+    device="cpu"
+
+    src = torch.tensor([[1, 3, 5, 7, 0, 0, 1, 1, 2], [2, 4, 6, 8, 10, 0, 1, 1, 1]])
+    trg = torch.tensor([[2, 4, 6, 8, 10, 1, 0], [3, 3, 1, 6, 9, 5, 0]])
+    model = Transformers(pad_idx,
+                        src_vocab_size,
+                        trg_vocab_size,
+                        num_layers,
+                        embedding_dim,
+                        max_len,
+                        hidden_dim,
+                        num_head,
+                        dropout_rate,
+                        device)
+    
+    res = model(src, trg)
+
+    print(res.shape)

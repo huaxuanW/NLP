@@ -11,7 +11,7 @@ class Positional_Embedding(nn.Module):
             (max_len, embedding_dim), device=device, requires_grad=False)
 
         # 1D=>2D unsqueze表示单词的位置
-        pos = torch.arange(0, max_len, device='cpu',
+        pos = torch.arange(0, max_len, device=device,
                            dtype=torch.float32).unsqueeze(1)
 
         # “i”是指embedding_dim的索引（例如embedding size=50，i=[0,50]）

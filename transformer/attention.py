@@ -11,8 +11,12 @@ def DotProductAttention(q, k, v, mask=None):
     # 使用 query 和 key^T 计算相似度
     k_t = k.transpose(2, 3)
     score = (q @ k_t) / math.sqrt(embedding_dim)
+    # print(f"q shape: {q.shape}")
+    # print(f"k_t shape: {k_t.shape}")
     # print(f"score shape: {score.shape}")
-
+    # print(f"mask shape: {mask.shape}")
+    # print(f"-"*18)
+    
     # 应用masking（可选）
     if mask is not None:
         score = score.masked_fill(mask == 0, 1e-9)
