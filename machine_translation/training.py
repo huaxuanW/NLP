@@ -8,12 +8,16 @@ Original file is located at
 
 # package
 """
+# importing sys
+import sys
+  
+# adding Folder_2 to the system path
+sys.path.insert(0, '/Users/huaxuanwang/Project/NLP/')
 
 from torchtext.data.utils import get_tokenizer
 from torchtext.vocab import build_vocab_from_iterator, Vocab
 from torchtext.datasets import Multi30k
 from torch.utils.data import DataLoader
-from collections import Counter
 import torch
 from torch.nn.utils.rnn import pad_sequence
 import math
@@ -24,16 +28,16 @@ from tqdm import tqdm
 
 """# load model"""
 
-!cp /content/drive/MyDrive/深度学习/NLP/transformers/attention.py .
-!cp /content/drive/MyDrive/深度学习/NLP/transformers/feedforward.py .
-!cp /content/drive/MyDrive/深度学习/NLP/transformers/layer_norm.py .
-!cp /content/drive/MyDrive/深度学习/NLP/transformers/model.py .
-!cp /content/drive/MyDrive/深度学习/NLP/transformers/multihead_attention.py .
-!cp /content/drive/MyDrive/深度学习/NLP/transformers/positinal_embedding.py .
-!cp /content/drive/MyDrive/深度学习/NLP/transformers/token_embeddig.py .
-!cp /content/drive/MyDrive/深度学习/NLP/transformers/transfomer_embedding.py .
+# !cp /content/drive/MyDrive/深度学习/NLP/transformers/attention.py .
+# !cp /content/drive/MyDrive/深度学习/NLP/transformers/feedforward.py .
+# !cp /content/drive/MyDrive/深度学习/NLP/transformers/layer_norm.py .
+# !cp /content/drive/MyDrive/深度学习/NLP/transformers/model.py .
+# !cp /content/drive/MyDrive/深度学习/NLP/transformers/multihead_attention.py .
+# !cp /content/drive/MyDrive/深度学习/NLP/transformers/positinal_embedding.py .
+# !cp /content/drive/MyDrive/深度学习/NLP/transformers/token_embeddig.py .
+# !cp /content/drive/MyDrive/深度学习/NLP/transformers/transfomer_embedding.py .
 
-from model import Transformers
+from transformer.model import Transformers
 
 """#data preparation
 
