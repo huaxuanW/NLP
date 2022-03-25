@@ -1,10 +1,11 @@
 import torch
 import torch.nn as nn
-
-from feedforward import PositionwiseFeedForward
-from layer_norm import LayerNorm
-from multihead_attention import MultiHeadAttention
-from transfomer_embedding import Transfomer_Embedding
+import sys
+sys.path.insert(0, "/Users/huaxuanwang/Project/NLP/")
+from transformer.feedforward import PositionwiseFeedForward
+from transformer.layer_norm import LayerNorm
+from transformer.multihead_attention import MultiHeadAttention
+from transformer.transfomer_embedding import Transfomer_Embedding
 
 
 class EncoderBlock(nn.Module):
@@ -25,15 +26,15 @@ class EncoderBlock(nn.Module):
         x = self.att(q=x, k=x, v=x, mask=x_mask)
 
         # 2. add and norm
-        x = self.norm1(x + x_copy)
         x = self.dropout1(x)
+        x = self.norm1(x + x_copy)
 
         # 3. pointwise feed forward
         x_copy = x
         x = self.fc(x)
         # 4. add and norm
-        x = self.norm2(x + x_copy)
         x = self.dropout2(x)
+        x = self.norm2(x + x_copy)
 
         return x
 
@@ -101,6 +102,7 @@ class EncoderLayer(nn.Module):
         x = self.emb(x)
 
         for layer in self.layers:
+            # print(x.shape, mask.shape)
             x = layer(x, mask)
         return x
 

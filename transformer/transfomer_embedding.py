@@ -1,8 +1,8 @@
 import torch
 import torch.nn as nn
 
-from positinal_embedding import Positional_Embedding
-from token_embeddig import Token_Embedding
+from transformer.positinal_embedding import Positional_Embedding
+from transformer.token_embeddig import Token_Embedding
 
 
 class Transfomer_Embedding(nn.Module):
