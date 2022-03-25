@@ -1,11 +1,11 @@
 import torch
 import torch.nn as nn
-import sys
-sys.path.insert(0, "/Users/huaxuanwang/Project/NLP/")
-from transformer.feedforward import PositionwiseFeedForward
-from transformer.layer_norm import LayerNorm
-from transformer.multihead_attention import MultiHeadAttention
-from transformer.transfomer_embedding import Transfomer_Embedding
+# import sys
+# sys.path.insert(0, "/Users/huaxuanwang/Project/NLP/")
+from feedforward import PositionwiseFeedForward
+from layer_norm import LayerNorm
+from multihead_attention import MultiHeadAttention
+from transfomer_embedding import Transfomer_Embedding
 
 
 class EncoderBlock(nn.Module):

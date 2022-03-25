@@ -1,5 +1,4 @@
 import sys
-
 sys.path.insert(0, "/Users/huaxuanwang/Project/NLP/")
 import torch
 import torch.nn as nn
@@ -73,7 +72,7 @@ class Bert(nn.Module):
 
         output = self.output_linear(pooled_h)
         output = self.activation(output)
-        
+
         #output: (batch_size, emb_dim)
         return output
 if __name__ == '__main__':

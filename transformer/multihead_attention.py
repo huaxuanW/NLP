@@ -1,7 +1,7 @@
 import torch
 import torch.nn as nn
 
-from transformer.attention import DotProductAttention
+from attention import DotProductAttention
 
 
 class MultiHeadAttention(nn.Module):
