@@ -2,7 +2,7 @@ import sys
 sys.path.insert(0, "/Users/huaxuanwang/Project/NLP/")
 import torch
 import torch.nn as nn
-from transformer.multihead_attention import MultiHeadAttention
+from multihead_attention import MultiHeadAttention
 from feedforward import PositionwiseFeedForward
 from embedding import Bert_Embedding
 from utils import attention_mask
@@ -84,5 +84,5 @@ if __name__ == '__main__':
 
     y = emb(x, seg)
 
-    print(y.shape) #(batch_size:2, seq_len:8, emb_dim:512)
+    print(y.shape)
 

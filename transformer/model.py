@@ -1,7 +1,5 @@
 import torch
 import torch.nn as nn
-# import sys
-# sys.path.insert(0, "/Users/huaxuanwang/Project/NLP/")
 from feedforward import PositionwiseFeedForward
 from layer_norm import LayerNorm
 from multihead_attention import MultiHeadAttention
